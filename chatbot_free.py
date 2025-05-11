@@ -31,25 +31,31 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Refined and Clear Prompt -----------------
+# ----------------- Refined and Detailed Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following financial data, generate a detailed, professional rating rationale:
+You are a professional credit analyst at Brickwork Ratings. Using the following financial information of the company, please generate a detailed rating rationale for the company:
 
-- Company Name: {company_name}
-- Revenue: ₹{revenue} Cr
-- Net Profit: ₹{net_profit} Cr
-- EBITDA: ₹{ebitda} Cr
-- Debt-Equity Ratio: {de_ratio}
-- Outlook: {outlook}
-- Analyst: {analyst}
-- Rating Date: {rating_date.strftime('%d-%b-%Y')}
+Company Name: {company_name}
+Revenue: ₹{revenue} Cr
+Net Profit: ₹{net_profit} Cr
+EBITDA: ₹{ebitda} Cr
+Debt-Equity Ratio: {de_ratio}
+Outlook: {outlook}
+Analyst: {analyst}
+Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-Please ensure the rationale includes:
-1. **A brief company overview**: Provide a snapshot of the company based on the financial data.
-2. **Financial health analysis**: Thoroughly analyze the revenue, net profit, EBITDA, and debt-equity ratio, highlighting strengths and weaknesses.
-3. **Impact of outlook**: Discuss how the current outlook (Stable/Positive/Negative/Developing) affects the rating decision.
-4. **Rating recommendation**: Based on the financials and outlook, provide a clear final rating recommendation, explaining the rationale behind it.
-5. **Concise but informative**: Ensure the rationale is professional, clear, and avoids unnecessary repetition.
+Please follow this structure in your response:
+1. **Company Overview**: Provide a brief description of the company’s financial position, including any notable strengths or weaknesses based on the provided financial data.
+2. **Financial Health Analysis**: 
+   - Analyze the revenue, net profit, EBITDA, and debt-equity ratio, highlighting what these figures indicate about the company’s financial stability.
+   - Address any significant trends or concerns regarding the company's financial performance.
+3. **Outlook Impact**: 
+   - Explain how the given outlook (Stable/Positive/Negative/Developing) influences the company’s credit rating.
+   - Provide insight into how this affects the company’s long-term financial health and rating.
+4. **Final Rating Recommendation**: 
+   - Based on the above analysis, provide a final credit rating for the company (e.g., "AA", "A", "BBB").
+   - Include a clear explanation of why this rating is being assigned, considering the company’s financial health and outlook.
+5. **Avoid repetition**: Keep the rationale concise but thorough. Avoid unnecessary or redundant phrases.
 """
 
 answer = ""
