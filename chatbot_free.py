@@ -33,7 +33,7 @@ rating_date = st.sidebar.date_input("Rating Date")
 
 # ----------------- Build Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed rating rationale:
+You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed, formal rating rationale:
 
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
@@ -42,22 +42,21 @@ You are a senior credit analyst at Brickwork Ratings. Based on the following dat
 - Debt-Equity Ratio: {de_ratio}
 - Outlook: {outlook}
 
-Include:
-- Key financial strengths
-- Risk factors
-- Industry trends
-- Rating rationale and outlook
-- Analyst: {analyst}
-- Rating Date: {rating_date.strftime('%d-%b-%Y')}
+Rating Rationale should include:
+1. Key financial strengths: Highlight the company's top financial metrics.
+2. Risk factors: Identify any major risks or concerns for the company.
+3. Industry trends: Discuss any relevant trends that may impact the company.
+4. Rating rationale: A formal evaluation of the company’s ability to meet obligations.
+5. Analyst: {analyst}
+6. Rating Date: {rating_date.strftime('%d-%b-%Y')}
 """
-
-answer = ""
 
 # ----------------- Generate Button -----------------
 if st.button("📝 Generate Rating Rationale"):
     with st.spinner("Analyzing company data and drafting rationale..."):
+        # Generating model output
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-        outputs = model.generate(input_ids, max_length=512, do_sample=False)
+        outputs = model.generate(input_ids, max_length=1024, do_sample=False)
         answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Display Result
@@ -72,11 +71,17 @@ if st.button("📝 Generate Rating Rationale"):
         width, height = A4
         c.setFont("Helvetica-Bold", 14)
         c.drawCentredString(width / 2, height - 50, f"{company_name} – Rating Rationale")
-        c.setFont("Helvetica", 11)
+        
+        # Start inserting the rating rationale into the PDF
+        c.setFont("Helvetica", 10)
         text_obj = c.beginText(40, height - 80)
-        text_obj.setLeading(14)
-        for line in text.split('\n'):
-            text_obj.textLine(line.strip())
+        text_obj.setLeading(12)  # Line spacing
+        lines = text.split('\n')
+        
+        for line in lines:
+            if len(line) > 0:
+                text_obj.textLine(line.strip())
+        
         c.drawText(text_obj)
         c.showPage()
         c.save()
