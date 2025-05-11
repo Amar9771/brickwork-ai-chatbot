@@ -30,10 +30,9 @@ de_ratio = st.sidebar.number_input("Debt-Equity Ratio", value=0.8)
 outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "Developing"])
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
-
-# ----------------- Build Prompt -----------------
+# ----------------- Build Enhanced Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed, formal rating rationale:
+You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed, formal rating rationale. The rationale should be professional, formal, and comprehensive, discussing financial strengths, risks, industry trends, and the overall rating outlook.
 
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
@@ -42,14 +41,19 @@ You are a senior credit analyst at Brickwork Ratings. Based on the following dat
 - Debt-Equity Ratio: {de_ratio}
 - Outlook: {outlook}
 
-Rating Rationale should include:
-1. Key financial strengths: Highlight the company's top financial metrics.
-2. Risk factors: Identify any major risks or concerns for the company.
-3. Industry trends: Discuss any relevant trends that may impact the company.
-4. Rating rationale: A formal evaluation of the company’s ability to meet obligations.
-5. Analyst: {analyst}
-6. Rating Date: {rating_date.strftime('%d-%b-%Y')}
+The Rating Rationale should include:
+1. **Key Financial Strengths**: Highlight the company's most positive financial metrics.
+2. **Risk Factors**: Identify any major financial or operational risks.
+3. **Industry Trends**: Discuss trends in the industry that may impact the company's performance.
+4. **Rating Rationale**: An overall evaluation of the company's financial position and outlook, including the final credit rating suggestion and the rationale behind it.
+5. **Analyst Name**: {analyst}
+6. **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
 """
+
+# Adjust the output generation
+input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+outputs = model.generate(input_ids, max_length=1024, do_sample=False)
+answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 # ----------------- Generate Button -----------------
 if st.button("📝 Generate Rating Rationale"):
