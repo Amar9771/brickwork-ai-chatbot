@@ -31,9 +31,9 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Refined and Detailed Prompt -----------------
+# ----------------- Refined and Structured Prompt -----------------
 prompt = f"""
-You are a professional credit analyst at Brickwork Ratings. Using the following financial information of the company, please generate a detailed rating rationale for the company:
+You are a professional credit analyst at Brickwork Ratings. Using the following financial information of the company, please generate a **detailed rating rationale** for the company:
 
 Company Name: {company_name}
 Revenue: ₹{revenue} Cr
@@ -44,18 +44,22 @@ Outlook: {outlook}
 Analyst: {analyst}
 Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-Please follow this structure in your response:
-1. **Company Overview**: Provide a brief description of the company’s financial position, including any notable strengths or weaknesses based on the provided financial data.
-2. **Financial Health Analysis**: 
-   - Analyze the revenue, net profit, EBITDA, and debt-equity ratio, highlighting what these figures indicate about the company’s financial stability.
-   - Address any significant trends or concerns regarding the company's financial performance.
+Please structure your response as follows:
+
+1. **Company Overview**: Briefly describe the company's financial position. Include any notable strengths or weaknesses based on the provided financials. Consider aspects such as profitability, growth, and financial stability.
+2. **Financial Health Analysis**:
+   - Analyze the company's **revenue**, **net profit**, **EBITDA**, and **debt-equity ratio**.
+   - What do these figures indicate about the company’s financial performance?
+   - How do these figures compare to industry standards or expectations?
 3. **Outlook Impact**: 
-   - Explain how the given outlook (Stable/Positive/Negative/Developing) influences the company’s credit rating.
-   - Provide insight into how this affects the company’s long-term financial health and rating.
+   - Based on the given **outlook**, explain how it affects the company’s creditworthiness. 
+   - How does this outlook influence the overall rating?
 4. **Final Rating Recommendation**: 
-   - Based on the above analysis, provide a final credit rating for the company (e.g., "AA", "A", "BBB").
-   - Include a clear explanation of why this rating is being assigned, considering the company’s financial health and outlook.
-5. **Avoid repetition**: Keep the rationale concise but thorough. Avoid unnecessary or redundant phrases.
+   - Provide a final credit rating for the company (e.g., **AA**, **A**, **BBB**) and justify your recommendation.
+   - Take into account the company's financial health and outlook in your recommendation.
+5. **Avoid repetition**: Keep the rationale clear, concise, and informative. Do not repeat any information.
+
+Please write the rating rationale in a formal, professional tone.
 """
 
 answer = ""
@@ -64,7 +68,7 @@ answer = ""
 if st.button("📝 Generate Rating Rationale"):
     with st.spinner("Analyzing company data and drafting rationale..."):
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-        outputs = model.generate(input_ids, max_length=1024, do_sample=False)
+        outputs = model.generate(input_ids, max_length=1024, do_sample=False, num_beams=5, temperature=0.7)
         answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Display Result
