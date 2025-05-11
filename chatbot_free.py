@@ -33,15 +33,9 @@ rating_date = st.sidebar.date_input("Rating Date")
 
 # ----------------- Refined Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following financial data, generate a detailed and coherent rating rationale. Structure the rationale as follows:
+You are a senior credit analyst at Brickwork Ratings. Your task is to generate a **Rating Rationale** for the company based on the following financials. Ensure that the rationale avoids repetitive information and is structured with clear analysis.
 
-1. **Company Overview**: Introduce the company with a brief description of its business and financial position.
-2. **Financial Performance**: Discuss the key financial metrics, including revenue, net profit, EBITDA, and debt-equity ratio, and what these figures indicate about the company's performance.
-3. **Outlook and Risks**: Analyze the company's outlook (Stable, Positive, Negative), based on the financial data provided. Include any financial or market risks.
-4. **Rating Rationale**: Based on the analysis above, generate a detailed rationale explaining the company's rating and outlook.
-5. **Rating Decision**: Provide the final rating based on the analysis.
-
-Here is the financial data for {company_name}:
+Here are the financial details for {company_name}:
 - **Revenue**: ₹{revenue} Cr
 - **Net Profit**: ₹{net_profit} Cr
 - **EBITDA**: ₹{ebitda} Cr
@@ -49,6 +43,14 @@ Here is the financial data for {company_name}:
 - **Outlook**: {outlook}
 - **Analyst**: {analyst}
 - **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
+
+Your rationale should cover the following points:
+1. A brief **Company Overview** with a focus on the financial health of the company.
+2. **Financial Performance**: A discussion of key metrics such as revenue, net profit, EBITDA, and debt-equity ratio.
+3. **Outlook Analysis**: What is the outlook for the company (Stable, Positive, Negative)? Include any key risks or opportunities.
+4. **Final Rating Decision**: Provide a recommendation based on the company’s financial health and outlook.
+
+Do not repeat the company name excessively. Provide a concise and clear explanation without unnecessary phrases.
 """
 
 answer = ""
