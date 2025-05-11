@@ -31,9 +31,9 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Refined Prompt -----------------
+# ----------------- Refined and Clear Prompt -----------------
 prompt = f"""
-Please generate a complete rating rationale for the company using the following financial data:
+You are a credit analyst at Brickwork Ratings. Generate a brief and focused rating rationale based on the following financial details of the company:
 
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
@@ -44,11 +44,12 @@ Please generate a complete rating rationale for the company using the following 
 - Analyst: {analyst}
 - Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-The rating rationale should include the following:
-1. **Company Overview**: Provide a brief overview of the company’s financial position, including strengths and weaknesses based on its financials. Highlight aspects such as profitability, growth, and financial stability.
-2. **Financial Analysis**: Analyze the key financial metrics (Revenue, Net Profit, EBITDA, Debt-Equity Ratio). Comment on the significance of these metrics in assessing the company’s financial health.
-3. **Impact of Outlook**: Discuss the impact of the given outlook (e.g., Stable) on the company’s credit rating.
-4. **Rating Recommendation**: Based on the financial analysis and outlook, provide a clear rating recommendation (e.g., 'AA', 'A+', etc.) and justify it.
+The rationale should include:
+1. A brief company overview based on its financial health.
+2. Analysis of key metrics such as revenue, net profit, EBITDA, and debt-equity ratio.
+3. The impact of the current outlook on the rating.
+4. A clear final rating recommendation.
+Avoid repetition and unnecessary phrases.
 """
 
 answer = ""
@@ -57,7 +58,7 @@ answer = ""
 if st.button("📝 Generate Rating Rationale"):
     with st.spinner("Analyzing company data and drafting rationale..."):
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-        outputs = model.generate(input_ids, max_length=1024, do_sample=False, num_beams=5, temperature=0.7)
+        outputs = model.generate(input_ids, max_length=512, do_sample=False)
         answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Display Result
