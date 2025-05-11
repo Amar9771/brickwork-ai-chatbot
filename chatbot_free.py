@@ -31,9 +31,15 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Build Enhanced Prompt -----------------
+# ----------------- Build Refined Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed, formal rating rationale. The rationale should be professional, formal, and comprehensive, discussing financial strengths, risks, industry trends, and the overall rating outlook.
+You are a senior credit analyst at Brickwork Ratings. Based on the following company financials, generate a detailed and structured rating rationale. The rationale should provide:
+1. A summary of the company’s key financial strengths, including revenue, profit, and debt management.
+2. A discussion of potential risk factors and how they impact the company’s financial position and outlook.
+3. An analysis of industry trends and their potential impact on the company’s future performance.
+4. A final rating decision (e.g., AA, BBB, etc.) and explanation of why this rating has been assigned.
+5. Mention the rating outlook (Stable/Positive/Negative/Developing).
+6. Use professional tone and structure, ensuring the rationale aligns with industry standards for credit rating reports.
 
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
@@ -42,13 +48,9 @@ You are a senior credit analyst at Brickwork Ratings. Based on the following dat
 - Debt-Equity Ratio: {de_ratio}
 - Outlook: {outlook}
 
-The Rating Rationale should include:
-1. **Key Financial Strengths**: Highlight the company's most positive financial metrics.
-2. **Risk Factors**: Identify any major financial or operational risks.
-3. **Industry Trends**: Discuss trends in the industry that may impact the company's performance.
-4. **Rating Rationale**: An overall evaluation of the company's financial position and outlook, including the final credit rating suggestion and the rationale behind it.
-5. **Analyst Name**: {analyst}
-6. **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
+Please include:
+- Analyst Name: {analyst}
+- Rating Date: {rating_date.strftime('%d-%b-%Y')}
 """
 
 answer = ""
