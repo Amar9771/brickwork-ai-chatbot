@@ -33,24 +33,22 @@ rating_date = st.sidebar.date_input("Rating Date")
 
 # ----------------- Refined Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed and structured rating rationale, answering the following:
+You are a senior credit analyst at Brickwork Ratings. Based on the following financial data, generate a detailed and coherent rating rationale. Structure the rationale as follows:
 
-1. **Company Overview**: Provide a detailed introduction about the company, its business model, and its financial position.
-2. **Financial Strengths**: Analyze key financial metrics such as revenue, net profit, EBITDA, and debt-equity ratio. How do these figures compare to industry standards?
-3. **Risk Factors**: Identify any risks the company faces, including financial risks (debt, liquidity) and external risks (market conditions, competition).
-4. **Industry Trends**: Discuss any trends in the industry that could impact the company, such as market growth, innovation, or external challenges.
-5. **Rating Rationale**: Based on all factors, provide a detailed rating with rationale, including why this company deserves its current rating.
-6. **Outlook**: Provide an outlook for the company (Stable, Positive, Negative) based on the provided financials and industry conditions.
+1. **Company Overview**: Introduce the company with a brief description of its business and financial position.
+2. **Financial Performance**: Discuss the key financial metrics, including revenue, net profit, EBITDA, and debt-equity ratio, and what these figures indicate about the company's performance.
+3. **Outlook and Risks**: Analyze the company's outlook (Stable, Positive, Negative), based on the financial data provided. Include any financial or market risks.
+4. **Rating Rationale**: Based on the analysis above, generate a detailed rationale explaining the company's rating and outlook.
+5. **Rating Decision**: Provide the final rating based on the analysis.
 
-Here is the financial data for XYZ Ltd.:
-- Company Name: {company_name}
-- Revenue: ₹{revenue} Cr
-- Net Profit: ₹{net_profit} Cr
-- EBITDA: ₹{ebitda} Cr
-- Debt-Equity Ratio: {de_ratio}
-- Outlook: {outlook}
-- Analyst: {analyst}
-- Rating Date: {rating_date.strftime('%d-%b-%Y')}
+Here is the financial data for {company_name}:
+- **Revenue**: ₹{revenue} Cr
+- **Net Profit**: ₹{net_profit} Cr
+- **EBITDA**: ₹{ebitda} Cr
+- **Debt-Equity Ratio**: {de_ratio}
+- **Outlook**: {outlook}
+- **Analyst**: {analyst}
+- **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
 """
 
 answer = ""
