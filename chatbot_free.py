@@ -1,60 +1,94 @@
-import openai
+import streamlit as st
+from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from io import BytesIO
 
-# OpenAI API key (replace with your key)
-openai.api_key = "your_openai_api_key"
+# ----------------- Streamlit Page Config -----------------
+st.set_page_config(page_title="Brickwork Free AI Chatbot", layout="centered")
+st.title("🤖 Brickwork Ratings — Free AI Assistant")
+st.markdown("Ask the assistant to generate a **Rating Rationale** based on company financials.")
 
-# Function to generate rating rationale based on company financials
-def generate_rating_rationale(company_data):
-    # Constructing the dynamic prompt based on the provided company data
-    prompt = f"""
-    You are a credit analyst at Brickwork Ratings. Based on the following company financials, generate a rating rationale:
+# ----------------- Load Smaller Model -----------------
+@st.cache_resource
+def load_model():
+    model_name = "google/flan-t5-small"  # Using a smaller model for better performance
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+    return tokenizer, model
 
-    Company Name: {company_data['company_name']}
-    Revenue: ₹{company_data['revenue']} Cr
-    Net Profit: ₹{company_data['net_profit']} Cr
-    EBITDA: ₹{company_data['ebitda']} Cr
-    Debt-Equity Ratio: {company_data['de_ratio']}
-    Outlook: {company_data['outlook']}
-    Analyst: {company_data['analyst']}
-    Rating Date: {company_data['rating_date']}
+tokenizer, model = load_model()
 
-    Please generate the following:
-    1. **Brief Rating Rationale**: A summary of the rating decision based on the company's financial health.
-    2. **Company Overview**: A brief overview based on the company’s financial metrics (revenue, profit, and debt).
-    3. **Impact of the Outlook**: How the outlook (Stable, Positive, Negative) affects the company's rating.
-    4. **Final Rating Recommendation**: The final rating recommendation based on the analysis.
-    """
+# ----------------- Sidebar for Inputs -----------------
+st.sidebar.header("📊 Company Financials")
 
-    # Requesting OpenAI to generate a response
-    response = openai.Completion.create(
-        engine="text-davinci-003",  # You can change the model here
-        prompt=prompt,
-        max_tokens=500,  # Adjust token length if needed
-        temperature=0.7,  # Controls randomness in the response
-        n=1,  # Only requesting one response
-        stop=None  # Optional: Define stop sequences
+company_name = st.sidebar.text_input("Company Name", "XYZ Ltd")
+revenue = st.sidebar.number_input("Revenue (₹ Cr)", value=2200)
+net_profit = st.sidebar.number_input("Net Profit (₹ Cr)", value=150)
+ebitda = st.sidebar.number_input("EBITDA (₹ Cr)", value=300)
+de_ratio = st.sidebar.number_input("Debt-Equity Ratio", value=0.8)
+outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "Developing"])
+analyst = st.sidebar.text_input("Analyst Name", "Amar")
+rating_date = st.sidebar.date_input("Rating Date")
+
+# ----------------- Refined and Clear Prompt -----------------
+prompt = f"""
+You are a credit analyst at Brickwork Ratings. Generate a brief and focused rating rationale based on the following financial details of the company:
+
+- Company Name: {company_name}
+- Revenue: ₹{revenue} Cr
+- Net Profit: ₹{net_profit} Cr
+- EBITDA: ₹{ebitda} Cr
+- Debt-Equity Ratio: {de_ratio}
+- Outlook: {outlook}
+- Analyst: {analyst}
+- Rating Date: {rating_date.strftime('%d-%b-%Y')}
+
+The rationale should include:
+1. A brief company overview based on its financial health.
+2. Analysis of key metrics such as revenue, net profit, EBITDA, and debt-equity ratio.
+3. The impact of the current outlook on the rating.
+4. A clear final rating recommendation.
+Avoid repetition and unnecessary phrases.
+"""
+
+answer = ""
+
+# ----------------- Generate Button -----------------
+if st.button("📝 Generate Rating Rationale"):
+    with st.spinner("Analyzing company data and drafting rationale..."):
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+        outputs = model.generate(input_ids, max_length=512, do_sample=False)
+        answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+    # Display Result
+    st.markdown("### 📄 Rating Rationale")
+    st.success(f"Rating rationale generated for **{company_name}**.")
+    st.write(answer)
+
+    # ----------------- Generate PDF In-Memory -----------------
+    def generate_pdf(text):
+        buffer = BytesIO()
+        c = canvas.Canvas(buffer, pagesize=A4)
+        width, height = A4
+        c.setFont("Helvetica-Bold", 14)
+        c.drawCentredString(width / 2, height - 50, f"{company_name} – Rating Rationale")
+        c.setFont("Helvetica", 11)
+        text_obj = c.beginText(40, height - 80)
+        text_obj.setLeading(14)
+        for line in text.split('\n'):
+            text_obj.textLine(line.strip())
+        c.drawText(text_obj)
+        c.showPage()
+        c.save()
+        buffer.seek(0)
+        return buffer
+
+    pdf_buffer = generate_pdf(answer)
+
+    st.download_button(
+        label="📄 Download as PDF",
+        data=pdf_buffer,
+        file_name=f"{company_name}_Rating_Rationale.pdf",
+        mime="application/pdf"
     )
-
-    # Extracting the generated text
-    generated_text = response.choices[0].text.strip()
-    return generated_text
-
-
-# Example dynamic company data
-company_data = {
-    'company_name': 'XYZ Ltd',
-    'revenue': 2200,  # In Crores
-    'net_profit': 150,  # In Crores
-    'ebitda': 300,  # In Crores
-    'de_ratio': 0.8,  # Debt-Equity Ratio
-    'outlook': 'Stable',  # The current outlook (Stable/Positive/Negative)
-    'analyst': 'Amar',  # The analyst name
-    'rating_date': '2025/05/11'  # Rating date
-}
-
-# Generate the rating rationale
-rating_rationale = generate_rating_rationale(company_data)
-
-# Print the rating rationale
-print("📄 Rating Rationale\n")
-print(rating_rationale)
