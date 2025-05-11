@@ -31,18 +31,16 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Build Refined Prompt -----------------
+# ----------------- Refined Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following company financials, generate a detailed and structured rating rationale. Ensure the output includes the following sections:
+You are a senior credit analyst at Brickwork Ratings. Generate a detailed and structured rating rationale for the company below, covering the following points:
 
-1. **Company Overview**: Provide a brief summary of the company including its financials and position in the market.
-2. **Financial Strengths**: Highlight the company’s key financial metrics such as revenue, net profit, EBITDA, and debt management.
-3. **Risk Factors**: Analyze potential risks that may affect the company’s financial position, considering the Debt-Equity ratio and other external factors.
-4. **Industry Trends**: Discuss relevant industry trends that could impact the company’s financial performance.
-5. **Rating Decision**: Provide a final rating decision (e.g., AA, BBB, etc.) with a clear rationale explaining why the company received this rating.
-6. **Rating Outlook**: Provide the company’s rating outlook (Stable/Positive/Negative/Developing) and what factors justify it.
-7. **Analyst**: {analyst}
-8. **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
+1. **Company Overview**: Provide a brief description of the company, its financials, and position in the market.
+2. **Financial Strengths**: Discuss key financial metrics such as revenue, net profit, EBITDA, and debt management.
+3. **Risk Factors**: Identify any risks that may affect the company, including the debt-equity ratio and external market risks.
+4. **Industry Trends**: Provide insights on the industry in which the company operates and how trends in that industry affect the company’s performance.
+5. **Rating Rationale**: Based on the financial strengths, risk factors, and industry trends, provide a final rating with rationale.
+6. **Rating Outlook**: Explain why the outlook is Stable/Positive/Negative/Developing based on the company's financials and market conditions.
 
 Here is the financial data:
 - Company Name: {company_name}
@@ -51,6 +49,8 @@ Here is the financial data:
 - EBITDA: ₹{ebitda} Cr
 - Debt-Equity Ratio: {de_ratio}
 - Outlook: {outlook}
+- Analyst: {analyst}
+- Rating Date: {rating_date.strftime('%d-%b-%Y')}
 """
 
 answer = ""
