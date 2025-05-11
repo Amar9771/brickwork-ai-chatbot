@@ -31,24 +31,24 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Concise Prompt with Clear Instructions -----------------
+# ----------------- Refined Prompt -----------------
 prompt = f"""
-Generate a detailed and focused Rating Rationale based on the following data for {company_name}:
+Please generate a complete rating rationale for the company using the following financial data:
 
-Company Name: {company_name}
-Revenue: ₹{revenue} Cr
-Net Profit: ₹{net_profit} Cr
-EBITDA: ₹{ebitda} Cr
-Debt-Equity Ratio: {de_ratio}
-Outlook: {outlook}
-Analyst: {analyst}
-Rating Date: {rating_date.strftime('%d-%b-%Y')}
+- Company Name: {company_name}
+- Revenue: ₹{revenue} Cr
+- Net Profit: ₹{net_profit} Cr
+- EBITDA: ₹{ebitda} Cr
+- Debt-Equity Ratio: {de_ratio}
+- Outlook: {outlook}
+- Analyst: {analyst}
+- Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-The rationale should include the following:
-- Company overview, considering its financial health, profitability, and growth.
-- Analysis of the key financial metrics (revenue, net profit, EBITDA, and debt-equity ratio).
-- Impact of the Outlook (Stable) on the company’s rating.
-- A clear rating recommendation based on the company’s financial position and outlook.
+The rating rationale should include the following:
+1. **Company Overview**: Provide a brief overview of the company’s financial position, including strengths and weaknesses based on its financials. Highlight aspects such as profitability, growth, and financial stability.
+2. **Financial Analysis**: Analyze the key financial metrics (Revenue, Net Profit, EBITDA, Debt-Equity Ratio). Comment on the significance of these metrics in assessing the company’s financial health.
+3. **Impact of Outlook**: Discuss the impact of the given outlook (e.g., Stable) on the company’s credit rating.
+4. **Rating Recommendation**: Based on the financial analysis and outlook, provide a clear rating recommendation (e.g., 'AA', 'A+', etc.) and justify it.
 """
 
 answer = ""
