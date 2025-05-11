@@ -2,7 +2,7 @@ import streamlit as st
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
-import os
+from io import BytesIO
 
 # ----------------- Streamlit Page Config -----------------
 st.set_page_config(page_title="Brickwork Free AI Chatbot", layout="centered")
@@ -65,34 +65,29 @@ if st.button("📝 Generate Rating Rationale"):
     st.success(f"Rating rationale generated for **{company_name}**.")
     st.write(answer)
 
-    # ----------------- Generate PDF -----------------
-    pdf_file = f"{company_name}_Rating_Rationale.pdf"
-
-    def generate_pdf(text, filename):
-        c = canvas.Canvas(filename, pagesize=A4)
+    # ----------------- Generate PDF In-Memory -----------------
+    def generate_pdf(text):
+        buffer = BytesIO()
+        c = canvas.Canvas(buffer, pagesize=A4)
         width, height = A4
         c.setFont("Helvetica-Bold", 14)
         c.drawCentredString(width / 2, height - 50, f"{company_name} – Rating Rationale")
-
         c.setFont("Helvetica", 11)
         text_obj = c.beginText(40, height - 80)
         text_obj.setLeading(14)
-
         for line in text.split('\n'):
             text_obj.textLine(line.strip())
         c.drawText(text_obj)
         c.showPage()
         c.save()
+        buffer.seek(0)
+        return buffer
 
-    generate_pdf(answer, pdf_file)
+    pdf_buffer = generate_pdf(answer)
 
-    with open(pdf_file, "rb") as f:
-        st.download_button(
-            label="📄 Download as PDF",
-            data=f,
-            file_name=pdf_file,
-            mime="application/pdf"
-        )
-
-    # Cleanup temporary file
-    os.remove(pdf_file)
+    st.download_button(
+        label="📄 Download as PDF",
+        data=pdf_buffer,
+        file_name=f"{company_name}_Rating_Rationale.pdf",
+        mime="application/pdf"
+    )
