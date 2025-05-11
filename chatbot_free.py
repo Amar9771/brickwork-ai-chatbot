@@ -30,6 +30,7 @@ de_ratio = st.sidebar.number_input("Debt-Equity Ratio", value=0.8)
 outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "Developing"])
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
+
 # ----------------- Build Enhanced Prompt -----------------
 prompt = f"""
 You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed, formal rating rationale. The rationale should be professional, formal, and comprehensive, discussing financial strengths, risks, industry trends, and the overall rating outlook.
@@ -50,15 +51,11 @@ The Rating Rationale should include:
 6. **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
 """
 
-# Adjust the output generation
-input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-outputs = model.generate(input_ids, max_length=1024, do_sample=False)
-answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
+answer = ""
 
 # ----------------- Generate Button -----------------
 if st.button("📝 Generate Rating Rationale"):
     with st.spinner("Analyzing company data and drafting rationale..."):
-        # Generating model output
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
         outputs = model.generate(input_ids, max_length=1024, do_sample=False)
         answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
@@ -75,17 +72,11 @@ if st.button("📝 Generate Rating Rationale"):
         width, height = A4
         c.setFont("Helvetica-Bold", 14)
         c.drawCentredString(width / 2, height - 50, f"{company_name} – Rating Rationale")
-        
-        # Start inserting the rating rationale into the PDF
-        c.setFont("Helvetica", 10)
+        c.setFont("Helvetica", 11)
         text_obj = c.beginText(40, height - 80)
-        text_obj.setLeading(12)  # Line spacing
-        lines = text.split('\n')
-        
-        for line in lines:
-            if len(line) > 0:
-                text_obj.textLine(line.strip())
-        
+        text_obj.setLeading(14)
+        for line in text.split('\n'):
+            text_obj.textLine(line.strip())
         c.drawText(text_obj)
         c.showPage()
         c.save()
