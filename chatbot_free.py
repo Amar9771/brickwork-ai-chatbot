@@ -33,16 +33,16 @@ rating_date = st.sidebar.date_input("Rating Date")
 
 # ----------------- Refined Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Generate a detailed and structured rating rationale for the company below, covering the following points:
+You are a senior credit analyst at Brickwork Ratings. Based on the following data, generate a detailed and structured rating rationale, answering the following:
 
-1. **Company Overview**: Provide a brief description of the company, its financials, and position in the market.
-2. **Financial Strengths**: Discuss key financial metrics such as revenue, net profit, EBITDA, and debt management.
-3. **Risk Factors**: Identify any risks that may affect the company, including the debt-equity ratio and external market risks.
-4. **Industry Trends**: Provide insights on the industry in which the company operates and how trends in that industry affect the company’s performance.
-5. **Rating Rationale**: Based on the financial strengths, risk factors, and industry trends, provide a final rating with rationale.
-6. **Rating Outlook**: Explain why the outlook is Stable/Positive/Negative/Developing based on the company's financials and market conditions.
+1. **Company Overview**: Provide a detailed introduction about the company, its business model, and its financial position.
+2. **Financial Strengths**: Analyze key financial metrics such as revenue, net profit, EBITDA, and debt-equity ratio. How do these figures compare to industry standards?
+3. **Risk Factors**: Identify any risks the company faces, including financial risks (debt, liquidity) and external risks (market conditions, competition).
+4. **Industry Trends**: Discuss any trends in the industry that could impact the company, such as market growth, innovation, or external challenges.
+5. **Rating Rationale**: Based on all factors, provide a detailed rating with rationale, including why this company deserves its current rating.
+6. **Outlook**: Provide an outlook for the company (Stable, Positive, Negative) based on the provided financials and industry conditions.
 
-Here is the financial data:
+Here is the financial data for XYZ Ltd.:
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
 - Net Profit: ₹{net_profit} Cr
