@@ -31,9 +31,9 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Simplified and Clear Prompt -----------------
+# ----------------- Refined and Clear Prompt -----------------
 prompt = f"""
-You are a credit analyst at Brickwork Ratings. Based on the following financial details, generate a concise and focused rating rationale for the company:
+You are a credit analyst at Brickwork Ratings. Generate a brief and focused rating rationale based on the following financial details of the company:
 
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
@@ -44,12 +44,12 @@ You are a credit analyst at Brickwork Ratings. Based on the following financial 
 - Analyst: {analyst}
 - Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-The rating rationale should include:
-1. A brief company overview, focusing on financial health.
+The rationale should include:
+1. A brief company overview based on its financial health.
 2. Analysis of key metrics such as revenue, net profit, EBITDA, and debt-equity ratio.
-3. Assessment of the outlook and key factors influencing it.
+3. The impact of the current outlook on the rating.
 4. A clear final rating recommendation.
-Avoid repeating the company name or including unnecessary phrases.
+Avoid repetition and unnecessary phrases.
 """
 
 answer = ""
@@ -58,7 +58,7 @@ answer = ""
 if st.button("📝 Generate Rating Rationale"):
     with st.spinner("Analyzing company data and drafting rationale..."):
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-        outputs = model.generate(input_ids, max_length=1024, do_sample=False)
+        outputs = model.generate(input_ids, max_length=512, do_sample=False)
         answer = tokenizer.decode(outputs[0], skip_special_tokens=True)
 
     # Display Result
