@@ -32,8 +32,7 @@ analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
 # ----------------- Refined and Clear Prompt -----------------
-prompt = f"""
-You are a credit analyst at Brickwork Ratings. Generate a brief and focused rating rationale based on the following financial details of the company:
+You are a credit analyst at Brickwork Ratings. Generate a rating rationale based on the following company details:
 
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
@@ -44,15 +43,13 @@ You are a credit analyst at Brickwork Ratings. Generate a brief and focused rati
 - Analyst: {analyst}
 - Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-The rationale should include:
-1. A brief company overview based on its financial health.
-2. Analysis of key metrics such as revenue, net profit, EBITDA, and debt-equity ratio.
-3. The impact of the current outlook on the rating.
-4. A clear final rating recommendation.
-Avoid repetition and unnecessary phrases.
-"""
+Please structure the rationale as follows:
+1. **Brief Rating Rationale**: Provide a summary of the overall rating decision based on the company's financial health.
+2. **Company Overview**: Offer a brief description of the company's financial standing, focusing on revenue, profitability, and debt metrics.
+3. **Impact of the Outlook**: Explain how the current outlook (Stable, Positive, Negative, Developing) affects the rating.
+4. **Final Rating Recommendation**: Offer a clear rating based on the analysis, considering the financial health and outlook.
 
-answer = ""
+Make sure to avoid repetition and maintain a concise, informative tone.
 
 # ----------------- Generate Button -----------------
 if st.button("📝 Generate Rating Rationale"):
