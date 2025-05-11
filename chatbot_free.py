@@ -33,24 +33,24 @@ rating_date = st.sidebar.date_input("Rating Date")
 
 # ----------------- Build Refined Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Based on the following company financials, generate a detailed and structured rating rationale. The rationale should provide:
-1. A summary of the company’s key financial strengths, including revenue, profit, and debt management.
-2. A discussion of potential risk factors and how they impact the company’s financial position and outlook.
-3. An analysis of industry trends and their potential impact on the company’s future performance.
-4. A final rating decision (e.g., AA, BBB, etc.) and explanation of why this rating has been assigned.
-5. Mention the rating outlook (Stable/Positive/Negative/Developing).
-6. Use professional tone and structure, ensuring the rationale aligns with industry standards for credit rating reports.
+You are a senior credit analyst at Brickwork Ratings. Based on the following company financials, generate a detailed and structured rating rationale. Ensure the output includes the following sections:
 
+1. **Company Overview**: Provide a brief summary of the company including its financials and position in the market.
+2. **Financial Strengths**: Highlight the company’s key financial metrics such as revenue, net profit, EBITDA, and debt management.
+3. **Risk Factors**: Analyze potential risks that may affect the company’s financial position, considering the Debt-Equity ratio and other external factors.
+4. **Industry Trends**: Discuss relevant industry trends that could impact the company’s financial performance.
+5. **Rating Decision**: Provide a final rating decision (e.g., AA, BBB, etc.) with a clear rationale explaining why the company received this rating.
+6. **Rating Outlook**: Provide the company’s rating outlook (Stable/Positive/Negative/Developing) and what factors justify it.
+7. **Analyst**: {analyst}
+8. **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
+
+Here is the financial data:
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
 - Net Profit: ₹{net_profit} Cr
 - EBITDA: ₹{ebitda} Cr
 - Debt-Equity Ratio: {de_ratio}
 - Outlook: {outlook}
-
-Please include:
-- Analyst Name: {analyst}
-- Rating Date: {rating_date.strftime('%d-%b-%Y')}
 """
 
 answer = ""
