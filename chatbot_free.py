@@ -31,26 +31,25 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Refined Prompt -----------------
+# ----------------- Simplified and Clear Prompt -----------------
 prompt = f"""
-You are a senior credit analyst at Brickwork Ratings. Your task is to generate a **Rating Rationale** for the company based on the following financials. Ensure that the rationale avoids repetitive information and is structured with clear analysis.
+You are a credit analyst at Brickwork Ratings. Based on the following financial details, generate a concise and focused rating rationale for the company:
 
-Here are the financial details for {company_name}:
-- **Revenue**: ₹{revenue} Cr
-- **Net Profit**: ₹{net_profit} Cr
-- **EBITDA**: ₹{ebitda} Cr
-- **Debt-Equity Ratio**: {de_ratio}
-- **Outlook**: {outlook}
-- **Analyst**: {analyst}
-- **Rating Date**: {rating_date.strftime('%d-%b-%Y')}
+- Company Name: {company_name}
+- Revenue: ₹{revenue} Cr
+- Net Profit: ₹{net_profit} Cr
+- EBITDA: ₹{ebitda} Cr
+- Debt-Equity Ratio: {de_ratio}
+- Outlook: {outlook}
+- Analyst: {analyst}
+- Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-Your rationale should cover the following points:
-1. A brief **Company Overview** with a focus on the financial health of the company.
-2. **Financial Performance**: A discussion of key metrics such as revenue, net profit, EBITDA, and debt-equity ratio.
-3. **Outlook Analysis**: What is the outlook for the company (Stable, Positive, Negative)? Include any key risks or opportunities.
-4. **Final Rating Decision**: Provide a recommendation based on the company’s financial health and outlook.
-
-Do not repeat the company name excessively. Provide a concise and clear explanation without unnecessary phrases.
+The rating rationale should include:
+1. A brief company overview, focusing on financial health.
+2. Analysis of key metrics such as revenue, net profit, EBITDA, and debt-equity ratio.
+3. Assessment of the outlook and key factors influencing it.
+4. A clear final rating recommendation.
+Avoid repeating the company name or including unnecessary phrases.
 """
 
 answer = ""
