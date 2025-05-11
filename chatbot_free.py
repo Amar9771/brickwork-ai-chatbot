@@ -9,10 +9,10 @@ st.set_page_config(page_title="Brickwork Free AI Chatbot", layout="centered")
 st.title("🤖 Brickwork Ratings — Free AI Assistant")
 st.markdown("Ask the assistant to generate a **Rating Rationale** based on company financials.")
 
-# ----------------- Load Model -----------------
+# ----------------- Load Smaller Model -----------------
 @st.cache_resource
 def load_model():
-    model_name = "google/flan-t5-large"
+    model_name = "google/flan-t5-small"  # Using a smaller model for better performance
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
     return tokenizer, model
