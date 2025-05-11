@@ -33,7 +33,7 @@ rating_date = st.sidebar.date_input("Rating Date")
 
 # ----------------- Refined and Clear Prompt -----------------
 prompt = f"""
-You are a credit analyst at Brickwork Ratings. Generate a detailed and professional rating rationale based on the following financial details of the company:
+You are a senior credit analyst at Brickwork Ratings. Based on the following financial data, generate a detailed, professional rating rationale:
 
 - Company Name: {company_name}
 - Revenue: ₹{revenue} Cr
@@ -44,12 +44,12 @@ You are a credit analyst at Brickwork Ratings. Generate a detailed and professio
 - Analyst: {analyst}
 - Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-The rationale should include:
-1. A brief company overview, highlighting key financial strengths and weaknesses.
-2. An analysis of key financial metrics: revenue, net profit, EBITDA, and debt-equity ratio.
-3. A detailed interpretation of the current outlook (Stable/Positive/Negative/Developing) and its impact on the rating.
-4. A clear and final rating recommendation, with an explanation of how the company’s financials and outlook lead to this rating.
-5. Avoid repetition, ensure clarity, and make the report concise but informative.
+Please ensure the rationale includes:
+1. **A brief company overview**: Provide a snapshot of the company based on the financial data.
+2. **Financial health analysis**: Thoroughly analyze the revenue, net profit, EBITDA, and debt-equity ratio, highlighting strengths and weaknesses.
+3. **Impact of outlook**: Discuss how the current outlook (Stable/Positive/Negative/Developing) affects the rating decision.
+4. **Rating recommendation**: Based on the financials and outlook, provide a clear final rating recommendation, explaining the rationale behind it.
+5. **Concise but informative**: Ensure the rationale is professional, clear, and avoids unnecessary repetition.
 """
 
 answer = ""
