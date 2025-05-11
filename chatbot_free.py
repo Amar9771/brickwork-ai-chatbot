@@ -31,9 +31,9 @@ outlook = st.sidebar.selectbox("Outlook", ["Stable", "Positive", "Negative", "De
 analyst = st.sidebar.text_input("Analyst Name", "Amar")
 rating_date = st.sidebar.date_input("Rating Date")
 
-# ----------------- Refined Prompt for Concise Instructions -----------------
+# ----------------- Concise Prompt with Clear Instructions -----------------
 prompt = f"""
-Please generate a detailed rating rationale based on the following information for the company:
+Generate a detailed and focused Rating Rationale based on the following data for {company_name}:
 
 Company Name: {company_name}
 Revenue: ₹{revenue} Cr
@@ -44,11 +44,11 @@ Outlook: {outlook}
 Analyst: {analyst}
 Rating Date: {rating_date.strftime('%d-%b-%Y')}
 
-The rationale should include:
-1. A **brief company overview** based on its financial health.
-2. A **financial analysis** covering key metrics like revenue, profit, EBITDA, and debt-equity ratio.
-3. An analysis of the **outlook's impact** on the company's rating.
-4. A **final rating recommendation** with justification based on financials and outlook.
+The rationale should include the following:
+- Company overview, considering its financial health, profitability, and growth.
+- Analysis of the key financial metrics (revenue, net profit, EBITDA, and debt-equity ratio).
+- Impact of the Outlook (Stable) on the company’s rating.
+- A clear rating recommendation based on the company’s financial position and outlook.
 """
 
 answer = ""
